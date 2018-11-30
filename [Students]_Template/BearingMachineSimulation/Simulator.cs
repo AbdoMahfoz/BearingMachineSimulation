@@ -11,6 +11,7 @@ namespace BearingMachineSimulation
     {
         static Random random = new Random();
         static int totalDelayC = 0;
+        static int totalDelayP= 0;
         /// <summary>
         /// Extract the random value out of a TimeDistribution object using a given random variable
         /// </summary>
@@ -73,9 +74,32 @@ namespace BearingMachineSimulation
         /// <param name="Case"></param>
         /// <param name="system"></param>
         /// <param name="CurrentCases"></param>
-        static void CalculateCase(ProposedSimulationCase Case, SimulationSystem system, params CurrentSimulationCase[] CurrentCases)
+        static void CalculateCase(ProposedSimulationCase Case, SimulationSystem system, ProposedSimulationCase PreviousCase , params CurrentSimulationCase[] CurrentCases )
         {
-            throw new NotImplementedException();
+            int min = CurrentCases[0].Bearing.Hours;
+            for (int i= 0; i<CurrentCases.Length; i++ )
+            {
+                if (CurrentCases[i] == null)
+                {
+                    CalculateCase(CurrentCases[i], system);
+                }
+                Case.Bearings[i] = CurrentCases[i].Bearing;
+                if(CurrentCases[i].Bearing.Hours < min)
+                {
+                    min = CurrentCases[i].Bearing.Hours;
+                }
+            }
+            Case.FirstFailure = min;
+            Case.AccumulatedHours = PreviousCase.AccumulatedHours + min;
+            Case.RandomDelay = random.Next(1, 10);
+            Case.Delay = CalculateRandomValue(system.DelayTimeDistribution, Case.RandomDelay);
+            system.ProposedSimulationTable.Add(Case);
+            totalDelayP += Case.Delay;
+            system.ProposedPerformanceMeasures.BearingCost += CurrentCases.Length * system.BearingCost;
+            system.ProposedPerformanceMeasures.DelayCost += Case.Delay * system.DowntimeCost;
+            system.ProposedPerformanceMeasures.DowntimeCost += system.DowntimeCost * system.RepairTimeForAllBearings;
+            system.ProposedPerformanceMeasures.RepairPersonCost += system.RepairTimeForAllBearings * (system.RepairPersonCost / 60);
+            system.ProposedPerformanceMeasures.TotalCost += system.ProposedPerformanceMeasures.BearingCost + system.ProposedPerformanceMeasures.DelayCost + system.ProposedPerformanceMeasures.DowntimeCost + system.ProposedPerformanceMeasures.RepairPersonCost;
         }
     }
 }
