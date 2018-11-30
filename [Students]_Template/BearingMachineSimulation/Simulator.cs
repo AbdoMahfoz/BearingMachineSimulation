@@ -9,6 +9,8 @@ namespace BearingMachineSimulation
     /// </summary>
     static class Simulator
     {
+        static Random random = new Random();
+        static int totalDelayC = 0;
         /// <summary>
         /// Extract the random value out of a TimeDistribution object using a given random variable
         /// </summary>
@@ -49,9 +51,21 @@ namespace BearingMachineSimulation
         /// </summary>
         /// <param name="Case"></param>
         /// <param name="system"></param>
-        static void CalculateCase(CurrentSimulationCase Case, SimulationSystem system)
+        static void CalculateCase(CurrentSimulationCase Case, SimulationSystem system , CurrentSimulationCase previousCase)
         {
-            throw new NotImplementedException();
+            Case.Bearing.RandomHours = random.Next(1, 100);
+            Case.Bearing.Hours = CalculateRandomValue(system.BearingLifeDistribution, Case.Bearing.RandomHours);
+            Case.RandomDelay = random.Next(1, 10);
+            Case.Delay = CalculateRandomValue(system.BearingLifeDistribution, Case.RandomDelay);
+            Case.AccumulatedHours = previousCase.AccumulatedHours + Case.Bearing.Hours;
+            totalDelayC += Case.Delay;
+            system.CurrentPerformanceMeasures.BearingCost += system.BearingCost;
+            system.CurrentPerformanceMeasures.DelayCost += Case.Delay * system.DowntimeCost;
+            system.CurrentPerformanceMeasures.DowntimeCost = Case.Bearing.Index * system.RepairTimeForOneBearing * system.DowntimeCost;
+            system.CurrentPerformanceMeasures.RepairPersonCost = Case.Bearing.Index * system.RepairTimeForOneBearing * (system.RepairPersonCost / 60);
+            system.CurrentPerformanceMeasures.TotalCost += 
+            system.CurrentPerformanceMeasures.BearingCost + system.CurrentPerformanceMeasures.DelayCost + system.CurrentPerformanceMeasures.DowntimeCost + system.CurrentPerformanceMeasures.RepairPersonCost;
+            system.CurrentSimulationTable.Add(Case);
         }
         /// <summary>
         /// 
