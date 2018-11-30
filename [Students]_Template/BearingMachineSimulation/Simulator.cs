@@ -50,9 +50,8 @@ namespace BearingMachineSimulation
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Case"></param>
         /// <param name="system"></param>
-        static void CalculateCase(CurrentSimulationCase Case, SimulationSystem system , CurrentSimulationCase previousCase)
+        static void CalculateCase(SimulationSystem system)
         {
             Case.Bearing.RandomHours = random.Next(1, 100);
             Case.Bearing.Hours = CalculateRandomValue(system.BearingLifeDistribution, Case.Bearing.RandomHours);
@@ -71,10 +70,8 @@ namespace BearingMachineSimulation
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Case"></param>
         /// <param name="system"></param>
-        /// <param name="CurrentCases"></param>
-        static void CalculateCase(ProposedSimulationCase Case, SimulationSystem system, ProposedSimulationCase PreviousCase , params CurrentSimulationCase[] CurrentCases )
+        static void CalculateCase(SimulationSystem system)
         {
             int min = CurrentCases[0].Bearing.Hours;
             for (int i= 0; i<CurrentCases.Length; i++ )
