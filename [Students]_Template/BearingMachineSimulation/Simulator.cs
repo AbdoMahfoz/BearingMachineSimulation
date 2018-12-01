@@ -53,19 +53,38 @@ namespace BearingMachineSimulation
         /// <param name="system"></param>
         static void CurrrentCalculateCase(SimulationSystem system)
         {
-            Case.Bearing.RandomHours = random.Next(1, 100);
-            Case.Bearing.Hours = CalculateRandomValue(system.BearingLifeDistribution, Case.Bearing.RandomHours);
-            Case.RandomDelay = random.Next(1, 10);
-            Case.Delay = CalculateRandomValue(system.BearingLifeDistribution, Case.RandomDelay);
-            Case.AccumulatedHours = previousCase.AccumulatedHours + Case.Bearing.Hours;
-            totalDelayC += Case.Delay;
-            system.CurrentPerformanceMeasures.BearingCost += system.BearingCost;
-            system.CurrentPerformanceMeasures.DelayCost += Case.Delay * system.DowntimeCost;
-            system.CurrentPerformanceMeasures.DowntimeCost = Case.Bearing.Index * system.RepairTimeForOneBearing * system.DowntimeCost;
-            system.CurrentPerformanceMeasures.RepairPersonCost = Case.Bearing.Index * system.RepairTimeForOneBearing * (system.RepairPersonCost / 60);
-            system.CurrentPerformanceMeasures.TotalCost += 
-            system.CurrentPerformanceMeasures.BearingCost + system.CurrentPerformanceMeasures.DelayCost + system.CurrentPerformanceMeasures.DowntimeCost + system.CurrentPerformanceMeasures.RepairPersonCost;
-            system.CurrentSimulationTable.Add(Case);
+           for(int i =0; i<system.NumberOfBearings;i++)
+            {
+                int j = 0;
+                while(true)
+                {
+                    system.CurrentSimulationTable[j].Bearing.Index = i;
+                    system.CurrentSimulationTable[j].Bearing.RandomHours = random.Next(1, 100);
+                    system.CurrentSimulationTable[j].Bearing.Hours = CalculateRandomValue(system.BearingLifeDistribution, system.CurrentSimulationTable[j].Bearing.RandomHours);
+                    system.CurrentSimulationTable[j].RandomDelay = random.Next(1, 10);
+                    system.CurrentSimulationTable[j].Delay = CalculateRandomValue(system.DelayTimeDistribution, system.CurrentSimulationTable[j].RandomDelay);
+                    if (j == 0)
+                    {
+                        system.CurrentSimulationTable[j].AccumulatedHours = system.CurrentSimulationTable[j].Bearing.Hours;
+                    }
+                    else
+                    {
+                        system.CurrentSimulationTable[j].AccumulatedHours = system.CurrentSimulationTable[j - 1].AccumulatedHours + system.CurrentSimulationTable[j].Bearing.Hours;
+                    }
+                    totalDelayC += system.CurrentSimulationTable[j].Delay;
+                    system.CurrentPerformanceMeasures.BearingCost += system.BearingCost;
+                    system.CurrentPerformanceMeasures.DelayCost += system.CurrentSimulationTable[j].Delay * system.DowntimeCost;
+                    system.CurrentPerformanceMeasures.DowntimeCost = system.CurrentSimulationTable[j].Bearing.Index * system.RepairTimeForOneBearing * system.DowntimeCost;
+                    system.CurrentPerformanceMeasures.RepairPersonCost = system.CurrentSimulationTable[j].Bearing.Index * system.RepairTimeForOneBearing * (system.RepairPersonCost / 60);
+                    system.CurrentPerformanceMeasures.TotalCost +=
+                    system.CurrentPerformanceMeasures.BearingCost + system.CurrentPerformanceMeasures.DelayCost + system.CurrentPerformanceMeasures.DowntimeCost + system.CurrentPerformanceMeasures.RepairPersonCost;
+                    system.CurrentSimulationTable.Add(system.CurrentSimulationTable[j]);
+                    if (system.CurrentSimulationTable[j].AccumulatedHours >= system.NumberOfHours)
+                        break;
+                    j++;
+                }
+            }
+            
         }
         /// <summary>
         /// 
