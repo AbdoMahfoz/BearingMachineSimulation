@@ -51,7 +51,7 @@ namespace BearingMachineSimulation
         /// 
         /// </summary>
         /// <param name="system"></param>
-        static void CurrrentCalculateCase(SimulationSystem system)
+        static public void CurrrentCalculateCase(SimulationSystem system)
         {
            for(int i =0; i<system.NumberOfBearings;i++)
             {
@@ -90,7 +90,7 @@ namespace BearingMachineSimulation
         /// 
         /// </summary>
         /// <param name="system"></param>
-        static void ProposedCalculateCase(SimulationSystem system)
+        static public void ProposedCalculateCase(SimulationSystem system)
         {
             int i = 0;
             int k = 0;

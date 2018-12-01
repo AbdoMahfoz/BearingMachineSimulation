@@ -148,7 +148,7 @@ namespace BearingMachineSimulation
             {
                 SimulationSystem system = new SimulationSystem();
                 RecieveData(TCPSocket, system);
-                //Run Simulation
+                Simulator.CurrrentCalculateCase(system);
                 TransmitData(TCPSocket, system.CurrentSimulationTable, system.CurrentPerformanceMeasures);
             }
         }
@@ -173,7 +173,7 @@ namespace BearingMachineSimulation
                 });
                 i++;
             }
-            //Run Simulation
+            Simulator.CurrrentCalculateCase(system);
             foreach(Thread t in ActiveThreads)
             {
                 t.Join();
