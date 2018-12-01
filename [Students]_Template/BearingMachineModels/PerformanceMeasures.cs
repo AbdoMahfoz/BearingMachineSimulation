@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BearingMachineModels
 {
-    public class PerformanceMeasures
+    public class PerformanceMeasures : ICloneable
     {
         public PerformanceMeasures()
         {
@@ -18,5 +18,10 @@ namespace BearingMachineModels
         public decimal DowntimeCost { get; set; }
         public decimal RepairPersonCost { get; set; }
         public decimal TotalCost { get; set; }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
     }
 }

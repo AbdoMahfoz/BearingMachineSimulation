@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BearingMachineModels
 {
-    public class SimulationSystem
+    public class SimulationSystem : ICloneable
     {
         public SimulationSystem()
         {
@@ -36,5 +36,17 @@ namespace BearingMachineModels
         public PerformanceMeasures CurrentPerformanceMeasures { get; set; }
         public List<ProposedSimulationCase> ProposedSimulationTable { get; set; }
         public PerformanceMeasures ProposedPerformanceMeasures { get; set; }
+
+        public object Clone()
+        {
+            SimulationSystem system = (SimulationSystem)MemberwiseClone();
+            system.DelayTimeDistribution = new List<TimeDistribution>(DelayTimeDistribution);
+            system.BearingLifeDistribution = new List<TimeDistribution>(BearingLifeDistribution);
+            system.CurrentSimulationTable = new List<CurrentSimulationCase>(CurrentSimulationTable);
+            system.ProposedSimulationTable = new List<ProposedSimulationCase>(ProposedSimulationTable);
+            system.ProposedPerformanceMeasures = (PerformanceMeasures)ProposedPerformanceMeasures.Clone();
+            system.CurrentPerformanceMeasures = (PerformanceMeasures)CurrentPerformanceMeasures.Clone();
+            return system;
+        }
     }
 }
