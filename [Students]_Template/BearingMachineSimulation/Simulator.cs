@@ -88,7 +88,7 @@ namespace BearingMachineSimulation
                 }
             }
             system.CurrentPerformanceMeasures.TotalCost =
-                    system.CurrentPerformanceMeasures.BearingCost + system.CurrentPerformanceMeasures.DelayCost 
+                    system.CurrentPerformanceMeasures.BearingCost + system.CurrentPerformanceMeasures.DelayCost
                   + system.CurrentPerformanceMeasures.DowntimeCost + system.CurrentPerformanceMeasures.RepairPersonCost;
         }
         /// <summary>
@@ -99,29 +99,59 @@ namespace BearingMachineSimulation
         {
             int iP = 0;
             int i = 0;
+            int h = 0;
             int num = 0;
-            while (i<system.CurrentSimulationTable.Capacity)
+            int LastBearingsIndex = 0;
+            while (i < system.CurrentSimulationTable.Count)
             {
+                if(LastBearingsIndex != system.CurrentSimulationTable[i].Bearing.Index)
+                {
+                    LastBearingsIndex++;
+                    h = 0;
+                }
+                if (h >= system.ProposedSimulationTable.Count)
+                {
+                    system.ProposedSimulationTable.Add(new ProposedSimulationCase()
+                    {
+                        Bearings = new List<Bearing>()
+                    });
+                    for (int k = 0; k < system.NumberOfBearings; k++)
+                    {
+                        system.ProposedSimulationTable[h].Bearings.Add(null);
+                    }
+                }
                 if (num != system.CurrentSimulationTable[i].Bearing.Index)
                 {
                     iP = 0;
                     num = system.CurrentSimulationTable[i].Bearing.Index;
                 }
-                system.ProposedSimulationTable[i].Bearings[num] = system.CurrentSimulationTable[i].Bearing;
+                system.ProposedSimulationTable[h].Bearings[num] = system.CurrentSimulationTable[i].Bearing;
                 iP++;
                 i++;
+                h++;
             }
             i = 0;
             while (true)
             {
                 int min = system.NumberOfHours;
-                if(system.ProposedSimulationTable[i] == null)
+                if (i >= system.ProposedSimulationTable.Count)
                 {
-                    system.ProposedSimulationTable.Add(new ProposedSimulationCase());
+                    system.ProposedSimulationTable.Add(new ProposedSimulationCase()
+                    {
+                        Bearings = new List<Bearing>()
+                    });
+                    for (int k = 0; k < system.NumberOfBearings; k++)
+                    {
+                        system.ProposedSimulationTable[i].Bearings.Add(null);
+                    }
                 }
                 for (int j = 0; j < system.NumberOfBearings; j++)
                 {
-                    if (system.CurrentSimulationTable[i].Bearing == null)
+                    if (i >= system.CurrentSimulationTable.Count)
+                    {
+                        system.CurrentSimulationTable.Add(new CurrentSimulationCase());
+                    }
+                    if (system.ProposedSimulationTable[i].Bearings[j] == null)
                     {
                         Bearing bearing = new Bearing
                         {
@@ -151,12 +181,12 @@ namespace BearingMachineSimulation
                 system.ProposedPerformanceMeasures.BearingCost += system.NumberOfBearings * system.BearingCost;
                 system.ProposedPerformanceMeasures.DelayCost += system.ProposedSimulationTable[i].Delay * system.DowntimeCost;
                 system.ProposedPerformanceMeasures.DowntimeCost += system.DowntimeCost * system.RepairTimeForAllBearings;
-                system.ProposedPerformanceMeasures.RepairPersonCost += system.RepairTimeForAllBearings * (system.RepairPersonCost / 60);
-                system.ProposedPerformanceMeasures.TotalCost += system.ProposedPerformanceMeasures.BearingCost + system.ProposedPerformanceMeasures.DelayCost + system.ProposedPerformanceMeasures.DowntimeCost + system.ProposedPerformanceMeasures.RepairPersonCost;
+                system.ProposedPerformanceMeasures.RepairPersonCost += system.RepairTimeForAllBearings * (system.RepairPersonCost / (decimal)60);
                 if (system.ProposedSimulationTable[i].AccumulatedHours >= system.NumberOfHours)
                     break;
                 i++;
             }
+            system.ProposedPerformanceMeasures.TotalCost = system.ProposedPerformanceMeasures.BearingCost + system.ProposedPerformanceMeasures.DelayCost + system.ProposedPerformanceMeasures.DowntimeCost + system.ProposedPerformanceMeasures.RepairPersonCost;
         }
     }
 }
