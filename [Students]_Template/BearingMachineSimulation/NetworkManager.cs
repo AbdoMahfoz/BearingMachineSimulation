@@ -158,6 +158,7 @@ namespace BearingMachineSimulation
             int i = 1;
             List<List<CurrentSimulationCase>> Cases = new List<List<CurrentSimulationCase>>() { new List<CurrentSimulationCase>() };
             List<Thread> ActiveThreads = new List<Thread>();
+            List<SimulationSystem> Systems = new List<SimulationSystem>();
             foreach(Socket s in ConnectedSockets)
             {
                 if(i == system.NumberOfBearings)
@@ -167,9 +168,10 @@ namespace BearingMachineSimulation
                 List<CurrentSimulationCase> Bearing = new List<CurrentSimulationCase>();
                 Cases.Add(Bearing);
                 ActiveThreads.Add(new Thread(new ParameterizedThreadStart(ServersideDataCommunication)));
+                Systems.Add((SimulationSystem)system.Clone());
                 ActiveThreads[ActiveThreads.Count - 1].Start(new object[]
                 {
-                    system.Clone(), Bearing, s
+                    Systems[Systems.Count - 1], Bearing, s
                 });
                 i++;
             }
@@ -178,6 +180,7 @@ namespace BearingMachineSimulation
             {
                 t.Join();
             }
+            //
         }
         public static void InitiateServer(int MaxConnections)
         {
@@ -210,7 +213,7 @@ namespace BearingMachineSimulation
                             break;
                         }
                     }
-                    TCPSocket.Connect(endPoint);
+                    TCPSocket.Connect(new IPEndPoint(((IPEndPoint)endPoint).Address, 8502));
                 }
                 catch(Exception)
                 {

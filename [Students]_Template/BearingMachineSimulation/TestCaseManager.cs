@@ -4,9 +4,10 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using BearingMachineModels;
+using BearingMachineSimulation;
 using BearingMachineTesting;
 
-namespace NewspaperSellerSimulation
+namespace BearingMachineSimulation
 {
     /// <summary>
     /// Handles reading and writing from test case files
@@ -177,15 +178,16 @@ namespace NewspaperSellerSimulation
                         HeaderFound = true;
                         List<string> lines = new List<string>();
                         string s;
-                        while(!string.IsNullOrWhiteSpace(s = reader.ReadLine().Trim()))
+                        while(!string.IsNullOrWhiteSpace(s = reader.ReadLine()))
                         {
+                            s.Trim();
                             if(s.Split(',').Length > 1 && h.IsOneArgument)
                             {
                                 throw new FormatException("Header \"" + header + "\" expects only a single argument per line, receieved " + lines.Count + " arguments");
                             }
                             lines.Add(s);
                         }
-                        if(!h.IsSingleLine && lines.Count > 1)
+                        if(h.IsSingleLine && lines.Count > 1)
                         {
                             throw new FormatException("Header \"" + header + "\" expects only a single line, receieved " + lines.Count + " lines");
                         }
@@ -246,7 +248,8 @@ namespace NewspaperSellerSimulation
                     builder.AppendLine("---TestCase #" + i++);
                     SimulationSystem system = FromFile(file);
                     watch.Restart();
-                    //Igniter.ParallelRun(system);
+                    Simulator.CurrrentCalculateCase(system);
+                    //Simulator.ProposedCalculateCase(system);
                     watch.Stop();
                     builder.AppendLine(TestingManager.Test(system, fileName)
                                      + "\nTime = " + watch.ElapsedMilliseconds + "ms");

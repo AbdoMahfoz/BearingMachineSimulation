@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BearingMachineTesting;
+using BearingMachineModels;
 
 namespace BearingMachineSimulation
 {
@@ -17,8 +18,13 @@ namespace BearingMachineSimulation
         {
             InitializeComponent();
         }
+        private SimulationSystem ExtractFromUI()
+        {
+            SimulationSystem system = new SimulationSystem();
 
-        private void label1_Click(object sender, EventArgs e)
+            return system;
+        }
+        private void StartSimulationButton_Click(object sender, EventArgs e)
         {
 
         }
