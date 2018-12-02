@@ -249,7 +249,7 @@ namespace BearingMachineSimulation
                     SimulationSystem system = FromFile(file);
                     watch.Restart();
                     Simulator.CurrrentCalculateCase(system);
-                    //Simulator.ProposedCalculateCase(system);
+                    Simulator.ProposedCalculateCase(system);
                     watch.Stop();
                     builder.AppendLine(TestingManager.Test(system, fileName)
                                      + "\nTime = " + watch.ElapsedMilliseconds + "ms");

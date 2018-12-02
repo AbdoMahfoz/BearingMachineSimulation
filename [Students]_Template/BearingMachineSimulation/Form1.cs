@@ -24,20 +24,22 @@ namespace BearingMachineSimulation
                 RepairTimeForOneBearing = (int)RepairTimeForOneBearing.Value,
                 RepairTimeForAllBearings = (int)RepairTimeForAllBearing.Value
             };
-            foreach (DataGridViewRow c in DelayTimeDistribution.Rows)
+            for(int i = 0; i < DelayTimeDistribution.Rows.Count - 1; i++)
             {
+                DataGridViewRow c = DelayTimeDistribution.Rows[i];
                 system.DelayTimeDistribution.Add(new TimeDistribution()
                 {
-                    Time = (int)c.Cells[0].Value,
-                    Probability = (decimal)c.Cells[1].Value
+                    Time = int.Parse((string)c.Cells[0].Value),
+                    Probability = decimal.Parse((string)c.Cells[1].Value)
                 });
             }
-            foreach (DataGridViewRow c in BearingLifeDistribution.Rows)
+            for (int i = 0; i < BearingLifeDistribution.Rows.Count - 1; i++)
             {
+                DataGridViewRow c = BearingLifeDistribution.Rows[i];
                 system.BearingLifeDistribution.Add(new TimeDistribution()
                 {
-                    Time = (int)c.Cells[0].Value,
-                    Probability = (decimal)c.Cells[1].Value
+                    Time = int.Parse((string)c.Cells[0].Value),
+                    Probability = decimal.Parse((string)c.Cells[1].Value)
                 });
             }
             return system;
@@ -106,10 +108,17 @@ namespace BearingMachineSimulation
                 c.Enabled = true;
             }
         }
-        private void StartSimulationButton_Click(object sender, EventArgs e)
+        private async void StartSimulationButton_Click(object sender, EventArgs e)
         {
             SimulationSystem system = ExtractFromUI();
-
+            DisableAllControls();
+            await Task.Run(() =>
+            {
+                Simulator.CurrrentCalculateCase(system);
+                Simulator.ProposedCalculateCase(system);
+            });
+            new Form2(system).ShowDialog();
+            EnableAllControls();
         }
         private async void AutomaticTestingButton_Click(object sender, EventArgs e)
         {
