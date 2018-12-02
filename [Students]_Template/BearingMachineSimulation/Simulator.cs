@@ -97,16 +97,31 @@ namespace BearingMachineSimulation
         /// <param name="system"></param>
         static public void ProposedCalculateCase(SimulationSystem system)
         {
+            int iP = 0;
             int i = 0;
-            int k = 0;
+            int num = 0;
+            while (i<system.CurrentSimulationTable.Capacity)
+            {
+                if (num != system.CurrentSimulationTable[i].Bearing.Index)
+                {
+                    iP = 0;
+                    num = system.CurrentSimulationTable[i].Bearing.Index;
+                }
+                system.ProposedSimulationTable[i].Bearings[num] = system.CurrentSimulationTable[i].Bearing;
+                iP++;
+                i++;
+            }
+            i = 0;
             while (true)
             {
-                //ProposedSimulationCase Case = new ProposedSimulationCase();
                 int min = system.NumberOfHours;
-                for (int j = 0; j < system.NumberOfBearings; j++)
+                if(system.ProposedSimulationTable[i] == null)
                 {
                     system.ProposedSimulationTable.Add(new ProposedSimulationCase());
-                    if (system.CurrentSimulationTable[k].Bearing == null)
+                }
+                for (int j = 0; j < system.NumberOfBearings; j++)
+                {
+                    if (system.CurrentSimulationTable[i].Bearing == null)
                     {
                         Bearing bearing = new Bearing
                         {
@@ -114,16 +129,12 @@ namespace BearingMachineSimulation
                             RandomHours = random.Next(1, 100)
                         };
                         bearing.Hours = CalculateRandomValue(system.BearingLifeDistribution, bearing.RandomHours);
-                    }
-                    else
-                    {
-                        system.ProposedSimulationTable[i].Bearings.Add(system.CurrentSimulationTable[k].Bearing);
+                        system.ProposedSimulationTable[i].Bearings[j] = bearing;
                     }
                     if (system.ProposedSimulationTable[i].Bearings[j].Hours < min)
                     {
                         min = system.ProposedSimulationTable[i].Bearings[j].Hours;
                     }
-                    k++;
                 }
                 system.ProposedSimulationTable[i].FirstFailure = min;
                 if (i == 0)
@@ -136,7 +147,6 @@ namespace BearingMachineSimulation
                 }
                 system.ProposedSimulationTable[i].RandomDelay = random.Next(1, 10);
                 system.ProposedSimulationTable[i].Delay = CalculateRandomValue(system.DelayTimeDistribution, system.ProposedSimulationTable[i].RandomDelay);
-                //system.ProposedSimulationTable.Add(Case);
                 totalDelayP += system.ProposedSimulationTable[i].Delay;
                 system.ProposedPerformanceMeasures.BearingCost += system.NumberOfBearings * system.BearingCost;
                 system.ProposedPerformanceMeasures.DelayCost += system.ProposedSimulationTable[i].Delay * system.DowntimeCost;
