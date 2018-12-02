@@ -48,11 +48,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.DemandDistributionGrid = new System.Windows.Forms.DataGridView();
+            this.DelayTimeDistribution = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Probability = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label8 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.BearingLifeDistribution = new System.Windows.Forms.DataGridView();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label9 = new System.Windows.Forms.Label();
@@ -63,8 +63,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.NumberOfBearings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RepairTimeForOneBearing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RepairTimeForAllBearing)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DemandDistributionGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DelayTimeDistribution)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BearingLifeDistribution)).BeginInit();
             this.SuspendLayout();
             // 
             // ClearButton
@@ -76,6 +76,7 @@
             this.ClearButton.TabIndex = 27;
             this.ClearButton.Text = "Clear";
             this.ClearButton.UseVisualStyleBackColor = true;
+            this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
             // ExportToFileButton
             // 
@@ -86,6 +87,7 @@
             this.ExportToFileButton.TabIndex = 26;
             this.ExportToFileButton.Text = "Export To File";
             this.ExportToFileButton.UseVisualStyleBackColor = true;
+            this.ExportToFileButton.Click += new System.EventHandler(this.ExportToFileButton_Click);
             // 
             // LoadFromFileButton
             // 
@@ -96,6 +98,7 @@
             this.LoadFromFileButton.TabIndex = 25;
             this.LoadFromFileButton.Text = "Load From File";
             this.LoadFromFileButton.UseVisualStyleBackColor = true;
+            this.LoadFromFileButton.Click += new System.EventHandler(this.LoadFromFileButton_Click);
             // 
             // AutomaticTestingButton
             // 
@@ -106,6 +109,7 @@
             this.AutomaticTestingButton.TabIndex = 24;
             this.AutomaticTestingButton.Text = "Automatic Testing";
             this.AutomaticTestingButton.UseVisualStyleBackColor = true;
+            this.AutomaticTestingButton.Click += new System.EventHandler(this.AutomaticTestingButton_Click);
             // 
             // StartSimulationButton
             // 
@@ -307,22 +311,22 @@
             this.label7.TabIndex = 41;
             this.label7.Text = "RepairTimeForAllBearings";
             // 
-            // DemandDistributionGrid
+            // DelayTimeDistribution
             // 
-            this.DemandDistributionGrid.AllowUserToResizeColumns = false;
-            this.DemandDistributionGrid.AllowUserToResizeRows = false;
-            this.DemandDistributionGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DemandDistributionGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DelayTimeDistribution.AllowUserToResizeColumns = false;
+            this.DelayTimeDistribution.AllowUserToResizeRows = false;
+            this.DelayTimeDistribution.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DelayTimeDistribution.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Probability});
-            this.DemandDistributionGrid.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.DemandDistributionGrid.Location = new System.Drawing.Point(288, 46);
-            this.DemandDistributionGrid.Margin = new System.Windows.Forms.Padding(2);
-            this.DemandDistributionGrid.Name = "DemandDistributionGrid";
-            this.DemandDistributionGrid.RowTemplate.Height = 28;
-            this.DemandDistributionGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.DemandDistributionGrid.Size = new System.Drawing.Size(160, 114);
-            this.DemandDistributionGrid.TabIndex = 42;
+            this.DelayTimeDistribution.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.DelayTimeDistribution.Location = new System.Drawing.Point(288, 46);
+            this.DelayTimeDistribution.Margin = new System.Windows.Forms.Padding(2);
+            this.DelayTimeDistribution.Name = "DelayTimeDistribution";
+            this.DelayTimeDistribution.RowTemplate.Height = 28;
+            this.DelayTimeDistribution.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.DelayTimeDistribution.Size = new System.Drawing.Size(160, 114);
+            this.DelayTimeDistribution.TabIndex = 42;
             // 
             // Column1
             // 
@@ -348,22 +352,22 @@
             this.label8.TabIndex = 43;
             this.label8.Text = "DelayTimeDistribution";
             // 
-            // dataGridView1
+            // BearingLifeDistribution
             // 
-            this.dataGridView1.AllowUserToResizeColumns = false;
-            this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.BearingLifeDistribution.AllowUserToResizeColumns = false;
+            this.BearingLifeDistribution.AllowUserToResizeRows = false;
+            this.BearingLifeDistribution.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.BearingLifeDistribution.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column2,
             this.Column3});
-            this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.dataGridView1.Location = new System.Drawing.Point(288, 193);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView1.Size = new System.Drawing.Size(160, 114);
-            this.dataGridView1.TabIndex = 44;
+            this.BearingLifeDistribution.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.BearingLifeDistribution.Location = new System.Drawing.Point(288, 193);
+            this.BearingLifeDistribution.Margin = new System.Windows.Forms.Padding(2);
+            this.BearingLifeDistribution.Name = "BearingLifeDistribution";
+            this.BearingLifeDistribution.RowTemplate.Height = 28;
+            this.BearingLifeDistribution.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.BearingLifeDistribution.Size = new System.Drawing.Size(160, 114);
+            this.BearingLifeDistribution.TabIndex = 44;
             // 
             // Column2
             // 
@@ -397,9 +401,9 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(592, 324);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.BearingLifeDistribution);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.DemandDistributionGrid);
+            this.Controls.Add(this.DelayTimeDistribution);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -429,8 +433,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.NumberOfBearings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RepairTimeForOneBearing)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RepairTimeForAllBearing)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DemandDistributionGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DelayTimeDistribution)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BearingLifeDistribution)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -457,9 +461,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.DataGridView DemandDistributionGrid;
+        private System.Windows.Forms.DataGridView DelayTimeDistribution;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView BearingLifeDistribution;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Probability;
